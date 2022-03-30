@@ -1,14 +1,32 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HomeView from '../views/home/Home.vue';
+import Login from '../views/Login.vue';
+import Home from '../views/home/Home.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/',
+    redirect: {
+      name: 'Login',
+    },
+    meta: {
+      hideTab: true,
+    },
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      hideTab: true,
+    },
+  },
+  {
     path: '/home',
-    name: 'home',
-    component: HomeView,
+    name: 'Home',
+    component: Home,
     meta: {
       keepAlive: true,
       isBack: false,
@@ -16,8 +34,9 @@ const routes = [
   },
   {
     path: '/home/list',
-    name: 'about',
-    component: () => import('../views/home/List.vue'),
+    name: 'List',
+    component: () =>
+      import(/* webpackChunkName: "[home]" */ '../views/home/List.vue'),
     meta: {
       title: '首页跳转列表',
       keepAlive: true,
@@ -26,8 +45,9 @@ const routes = [
   },
   {
     path: '/home/list/detail',
-    name: 'about',
-    component: () => import('../views/home/ListDetail.vue'),
+    name: 'About',
+    component: () =>
+      import(/* webpackChunkName: "[home]" */ '../views/home/ListDetail.vue'),
     meta: {
       title: '首页跳转列表 三级详情',
     },
@@ -35,7 +55,8 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: () => import('../views/AboutView.vue'),
+    component: () =>
+      import(/* webpackChunkName: "[about]" */ '../views/About.vue'),
     meta: {
       title: '关于',
       keepAlive: false,
@@ -44,7 +65,8 @@ const routes = [
   {
     path: '/mine',
     name: 'mine',
-    component: () => import('../views/mine/Mine.vue'),
+    component: () =>
+      import(/* webpackChunkName: "[mine]" */ '../views/mine/Mine.vue'),
     meta: {
       title: '我的',
       keepAlive: true,
@@ -54,6 +76,16 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      if (from.meta.keepAlive) {
+        from.meta.savedPosition = document.body.scrollTop;
+      }
+      return { x: 0, y: to.meta.savedPosition || 0 };
+    }
+  },
 });
 
 export default router;

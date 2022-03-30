@@ -49,6 +49,10 @@ export default {
   },
   methods: {
     navigatorTo(item) {
+      // 重复路由跳转vue-router报错
+      if (item.path === this.$route.path) {
+        return;
+      }
       this.$router.push({
         path: item.path,
       });

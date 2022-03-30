@@ -4,7 +4,7 @@
       <router-view v-if="$route.meta.keepAlive" />
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive" />
-    <TabBar :data="tabList" />
+    <TabBar v-if="!$route.meta.hideTab" :data="tabList" />
   </div>
 </template>
 <script>
