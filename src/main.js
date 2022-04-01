@@ -7,8 +7,10 @@ import store from './store';
 import './styles/reset.css';
 
 Vue.config.productionTip = false;
-import { Button } from 'vant';
-Vue.use(Button);
+import { Button, Icon } from 'vant';
+Vue.use(Button).use(Icon);
+
+import '@/directive/index';
 
 new Vue({
   router,

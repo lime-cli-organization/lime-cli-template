@@ -30,3 +30,11 @@ export const obj2params = (obj) => {
   }
   return arr.join('&');
 };
+
+/**
+ * 合并对象
+ * @param {object} origin 源对象
+ * @param {object} external 附加对象
+ * @return 合并后的对象
+ */
+export const mergeObj = (origin, external) => {};

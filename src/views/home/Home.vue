@@ -2,12 +2,25 @@
   <div>
     <h1>This is a home page</h1>
     <van-button type="primary" @click="navigatorTo">list按钮</van-button>
+    <LSelect
+      :props="{
+        value: 'id',
+        label: 'name',
+      }"
+      separator="/"
+      :filterable="true"
+      @change="selectChange"
+    />
   </div>
 </template>
 
 <script>
+import LSelect from '@/components/System/LSelect.vue';
 export default {
   name: 'Home',
+  components: {
+    LSelect,
+  },
   created() {
     this.isFirstEnter = true;
   },
@@ -34,6 +47,9 @@ export default {
       this.$router.push({
         path: '/home/list',
       });
+    },
+    selectChange(value) {
+      console.log(value);
     },
   },
 };
