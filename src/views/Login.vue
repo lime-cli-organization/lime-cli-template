@@ -1,5 +1,8 @@
 <template>
   <div class="wrapper">
+    <div class="calendar_wrapper">
+      <LCalendar />
+    </div>
     <div class="login">
       <input type="text" v-model="userName" />
       <input type="text" v-model="password" />
@@ -12,8 +15,10 @@
 <script>
 import { GetImage, LoginWithCode } from '@/apis/Authoriza';
 import { setCookie } from '@/utils/storage';
+import LCalendar from '@/components/System/LCalendar.vue';
 export default {
   name: 'Login',
+  components: { LCalendar },
   data() {
     return {
       // 用户名 & 密码
@@ -69,5 +74,9 @@ export default {
     line-height: 2;
     margin-bottom: 8px;
   }
+}
+.calendar_wrapper {
+  width: 375px;
+  border: 1px solid red;
 }
 </style>

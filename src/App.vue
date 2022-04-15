@@ -31,6 +31,11 @@ export default {
       ],
     };
   },
+  computed: {
+    isPageLoading() {
+      return this.$store.state.app.isPageLoading;
+    },
+  },
 };
 </script>
 

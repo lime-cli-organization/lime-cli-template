@@ -72,6 +72,26 @@ const routes = [
       keepAlive: true,
     },
   },
+  {
+    path: '/online/topics',
+    name: 'onLineTopics',
+    component: () =>
+      import(/* webpackChunkName: "[topics]" */ '../views/onLine/Topics.vue'),
+    meta: {
+      title: '答题',
+      keepAlive: true,
+    },
+  },
+  {
+    path: '/online/topic/:id',
+    name: 'onLineTopic',
+    component: () =>
+      import(/* webpackChunkName: "[topic]" */ '../views/onLine/Topic.vue'),
+    meta: {
+      title: '答题',
+      keepAlive: true,
+    },
+  },
 ];
 
 const router = new VueRouter({

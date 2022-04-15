@@ -7,8 +7,8 @@ import store from './store';
 import './styles/reset.css';
 
 Vue.config.productionTip = false;
-import { Button, Icon } from 'vant';
-Vue.use(Button).use(Icon);
+import { Button, Icon, Loading, Overlay, RadioGroup, Radio } from 'vant';
+Vue.use(Button).use(Icon).use(Loading).use(Overlay).use(RadioGroup).use(Radio);
 
 import '@/directive/index';
 

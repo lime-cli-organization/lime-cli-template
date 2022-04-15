@@ -36,7 +36,7 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    store.commit('HIDE_LOADING');
+    store.commit('setPageLoading', false);
     if (axios.isCancel(error)) {
       return Promise.resolve({
         statusText: '中断请求',
