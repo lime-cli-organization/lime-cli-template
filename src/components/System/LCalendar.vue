@@ -1,7 +1,7 @@
 <template>
   <div class="l_calendar">
-    <div class="sevent" v-if="!showCalendar">
-      <span v-for="(item, index) in current7days" :key="index">
+    <div class="sevent">
+      <span v-for="(item, index) in getCurrentWeek(current)" :key="index">
         {{ item | formatDate }}
       </span>
     </div>
@@ -16,13 +16,14 @@
         <table>
           <thead>
             <tr>
-              <th>日</th>
+              <th v-if="weekBegin === 'sunday'">日</th>
               <th>一</th>
               <th>二</th>
               <th>三</th>
               <th>四</th>
               <th>五</th>
               <th>六</th>
+              <th v-if="weekBegin === 'monday'">日</th>
             </tr>
           </thead>
           <tbody>
@@ -49,7 +50,7 @@ export default {
   data() {
     return {
       // current: new Date(2021, 9, 12),
-      current: new Date(2022, 3, 15),
+      current: new Date(2022, 3, 17),
       year: '',
       month: '', // month + 1 === 当前月份
       day: '', // 一周中的第几天
@@ -64,8 +65,9 @@ export default {
         new Date(2022, 3, 16),
         new Date(2022, 3, 17),
       ],
-      activeArr: [new Date(2022, 3, 20), new Date(2022, 3, 4)], //
+      activeArr: [new Date(2022, 3, 20), new Date(2022, 3, 4)],
       showCalendar: false,
+      weekBegin: 'monday', // monday | sunday
     };
   },
   computed: {
@@ -106,6 +108,7 @@ export default {
     this.day = this.current.getDay();
     this.date = this.current.getDate();
     this.getCalendar();
+    console.log(this.getCurrentWeek(this.current));
   },
   methods: {
     toggleCalendar() {
@@ -126,16 +129,21 @@ export default {
       return monthDaysArr[month];
     },
     getCalendar() {
-      const { year, month } = this;
+      const { year, month, weekBegin } = this;
       const monthDays = this.getMonthTotalDay(month);
       const date = new Date(year, month, 1);
-      const beginDayOnWeek = date.getDay(); // 1号是周几
+      const beginDayOnWeek =
+        this.weekBegin === 'monday'
+          ? date.getDay() === 0
+            ? 6
+            : date.getDay() - 1
+          : date.getDay(); // 1号是周几 0为周日
       let arr = new Array();
       let temp = 0; // 日期
       const prevMonthDays = this.getMonthTotalDay(month === 0 ? 11 : month - 1);
       let nextMonthBegin = 1;
       let prevMonthWeekDiff = beginDayOnWeek - 1;
-      const monthWeeks = this.getWeeks(year, month);
+      const monthWeeks = this.getWeeks(year, month, weekBegin);
       // 一月最多6周
       for (let i = 0; i < monthWeeks; i++) {
         arr[i] = new Array();
@@ -152,16 +160,44 @@ export default {
       }
       this.dateArr = arr;
     },
-    // 一个月有几周
-    getWeeks(year, month) {
+    /**
+     * 一个月有几周
+     * @param {Number} year
+     * @param {Number} month
+     * @param { 'sunday' | 'monday' } weekBegin 周起始是周日 or 周一
+     * @returns {Number} 一个月的周数
+     */
+    getWeeks(year, month, weekBegin = 'monday') {
       const monthDay = this.getMonthTotalDay(month);
       const beginDate = new Date(year, month, 1);
       const endDate = new Date(year, month, monthDay);
       let weekStart = beginDate.getDay();
       let weekEnd = endDate.getDay();
-      const firstWeekDays = weekStart === 0 ? 7 : 7 - weekStart;
-      const lastWeekDays = weekEnd === 0 ? 7 : weekEnd + 1;
+      let firstWeekDays, lastWeekDays;
+      if (weekBegin === 'sunday') {
+        firstWeekDays = weekStart === 0 ? 7 : 7 - weekStart;
+        lastWeekDays = weekEnd === 0 ? 1 : weekEnd + 1;
+      } else {
+        firstWeekDays = weekStart === 0 ? 7 : 7 - weekStart + 1;
+        lastWeekDays = weekEnd === 0 ? 7 : weekEnd;
+      }
       return 2 + (monthDay - (firstWeekDays + lastWeekDays)) / 7;
+    },
+    /**
+     * 获取当前周日期数组
+     * @param {Date} current 当前时间
+     * @returns {Array} 当前周日期的数据
+     */
+    getCurrentWeek(current) {
+      let arr = [];
+      const timeStamp = current.getTime();
+      let currentDay = current.getDay();
+      const oneDay = 1000 * 60 * 60 * 24;
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(timeStamp + ((i - currentDay - 6) % 7) * oneDay);
+        arr.push(date);
+      }
+      return arr;
     },
     changeMonth(type) {
       if (type === 'prev') {

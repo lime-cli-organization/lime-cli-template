@@ -73,6 +73,14 @@ const routes = [
     },
   },
   {
+    path: '/canvas/checkTopic',
+    name: 'checkTopic',
+    component: () =>
+      import(
+        /* webpackChunkName: "[canvas]" */ '../views/canvas/CheckTopic.vue'
+      ),
+  },
+  {
     path: '/online/topics',
     name: 'onLineTopics',
     component: () =>

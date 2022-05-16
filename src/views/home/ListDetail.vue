@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <h1>This is an list detail page</h1>
     <div class="type" v-for="item in mockData.json1" :key="item[0]">
       <van-button

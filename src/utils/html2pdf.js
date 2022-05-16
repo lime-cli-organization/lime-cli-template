@@ -1,3 +1,7 @@
+/**
+ * pdf压缩下载
+ * 【】绘制性能问题
+ */
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import JSZip from 'jszip';
@@ -44,25 +48,11 @@ export default {
           // 当内容未超过pdf一页显示的范围，无需分页
           if (data.leftHeight < data.pageHeight) {
             // addImage(pageData, 'JPEG' 左 上 宽 高)
-            PDF.addImage(
-              data.pageData,
-              'JPEG',
-              0,
-              0,
-              data.imgWidth,
-              data.imgHeight
-            );
+            PDF.addImage(data.pageData, 'JPEG', 0, 0, data.imgWidth, data.imgHeight);
           } else {
             // 超过一页， 分页打印
             while (data.leftHeight > 0) {
-              PDF.addImage(
-                data.pageData,
-                'JPEG',
-                0,
-                position,
-                data.imgWidth,
-                data.imgHeight
-              );
+              PDF.addImage(data.pageData, 'JPEG', 0, position, data.imgWidth, data.imgHeight);
               data.leftHeight -= data.pageHeight;
               position -= page.height;
               if (data.leftHeight > 0) {

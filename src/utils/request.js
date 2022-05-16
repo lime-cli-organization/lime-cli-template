@@ -2,14 +2,16 @@ import router from '@/router';
 import store from '@/store';
 import axios from 'axios';
 import { Toast } from 'vant';
-import { delCookie } from '@/utils/storage';
+import { getCookie, delCookie } from '@/utils/storage';
 
-axios.defaults.withCredentials = true;
+const service = axios.create({
+  withCredentials: true,
+});
 
 // 页面发起的请求路径，通过长度控制pageLoading的显示
 const queue = {};
 
-axios.interceptors.request.use(
+service.interceptors.request.use(
   (config) => {
     // 全局请求loading
     if (Object.keys(queue).length === 0) {
@@ -17,6 +19,8 @@ axios.interceptors.request.use(
     }
     const { url } = config;
     queue[url] = url;
+    // 设置token
+    config.headers.Authorization = 'Bear ' + getCookie('token');
     return config;
   },
   (error) => {
@@ -24,7 +28,7 @@ axios.interceptors.request.use(
   }
 );
 
-axios.interceptors.response.use(
+service.interceptors.response.use(
   (response) => {
     const {
       config: { url },
@@ -33,7 +37,14 @@ axios.interceptors.response.use(
     if (Object.keys(queue).length === 0) {
       store.commit('setPageLoading', false);
     }
-    return response;
+    const { code, data } = response.data;
+    if (code === 200) {
+      return data;
+    } else {
+      // http请求200， 业务状态码非200
+      handleError(response);
+      return Promise.reject(response);
+    }
   },
   (error) => {
     store.commit('setPageLoading', false);
@@ -42,6 +53,7 @@ axios.interceptors.response.use(
         statusText: '中断请求',
       });
     }
+    // http请求非200
     handleError(error.response);
     return Promise.reject(error.response);
   }
@@ -97,5 +109,5 @@ const handleError = (response) => {
 };
 
 export function request(options) {
-  return axios(options).then().then();
+  return service(options).then().then();
 }

@@ -17,6 +17,7 @@
     "vant": "^2.4.6",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
+    "vue-splitpane": "^1.0.6",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
