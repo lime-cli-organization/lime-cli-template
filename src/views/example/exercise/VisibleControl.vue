@@ -14,7 +14,7 @@
             </van-radio>
           </van-radio-group>
           your answer is
-          {{ item.customer_answer === item.correct_answer ? 'right' : 'error' }}
+          {{ item.customer_answer === item.correct_answer ? "right" : "error" }}
         </div>
       </template>
     </div>
@@ -41,48 +41,48 @@
 
 <script>
 export default {
-  name: 'Topics',
+  name: "VisibleControl",
   data() {
     return {
       currentIndex: 0,
       questionArr: [
         {
           question:
-            'Which one of these was not a beach landing site in the Invasion of Normandy?',
-          correct_answer: 'Silver',
-          options: ['Gold', 'Silver', 'Juno', 'Sword'],
+            "Which one of these was not a beach landing site in the Invasion of Normandy?",
+          correct_answer: "Silver",
+          options: ["Gold", "Silver", "Juno", "Sword"],
         },
         {
-          difficulty: 'easy',
+          difficulty: "easy",
           question:
-            'King Henry VIII was the second monarch of which European royal house?',
-          correct_answer: 'Tudor',
-          options: ['York', 'Stuart', 'Lancaster', 'Tudor'],
+            "King Henry VIII was the second monarch of which European royal house?",
+          correct_answer: "Tudor",
+          options: ["York", "Stuart", "Lancaster", "Tudor"],
         },
         {
-          difficulty: 'easy',
+          difficulty: "easy",
           question:
-            'Which one of these tanks was designed and operated by the United Kingdom?',
-          correct_answer: 'Tog II',
-          options: ['M4 Sherman', 'Tog II', 'Tiger H1', 'T-34'],
+            "Which one of these tanks was designed and operated by the United Kingdom?",
+          correct_answer: "Tog II",
+          options: ["M4 Sherman", "Tog II", "Tiger H1", "T-34"],
         },
         {
-          difficulty: 'easy',
+          difficulty: "easy",
           question:
-            'Which of the following ancient peoples was NOT classified as Hellenic (Greek)?',
-          correct_answer: 'Illyrians',
-          options: ['Illyrians', 'Dorians', 'Achaeans', 'Ionians'],
+            "Which of the following ancient peoples was NOT classified as Hellenic (Greek)?",
+          correct_answer: "Illyrians",
+          options: ["Illyrians", "Dorians", "Achaeans", "Ionians"],
         },
         {
-          difficulty: 'easy',
+          difficulty: "easy",
           question:
-            'Which famous world leader is famed for the saying, &quot;Let them eat cake&quot;, yet is rumored that he/she never said it at all?',
-          correct_answer: 'Marie Antoinette',
+            "Which famous world leader is famed for the saying, &quot;Let them eat cake&quot;, yet is rumored that he/she never said it at all?",
+          correct_answer: "Marie Antoinette",
           options: [
-            'Czar Nicholas II',
-            'Elizabeth I',
-            'Marie Antoinette',
-            'Henry VIII',
+            "Czar Nicholas II",
+            "Elizabeth I",
+            "Marie Antoinette",
+            "Henry VIII",
           ],
         },
       ],

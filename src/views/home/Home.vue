@@ -1,7 +1,20 @@
 <template>
   <div class="wrapper">
     <van-cell title="日历" is-link to="/example/calendar" />
-    <van-cell title="日历" is-link to="/example/calendar" />
+    <van-cell title="PDF压缩下载" is-link to="/example/downloadPDFZip" />
+    <van-cell title="数据解析" is-link to="/example/transformData" />
+    <van-cell
+      title="答题-一次性全量-显示隐藏"
+      is-link
+      to="/example/exercise/visibleControl"
+    />
+    <van-cell
+      title="答题-一个一个-页面一题"
+      is-link
+      to="/example/exercise/topic/1"
+    />
+    <van-cell title="页面缓存" is-link to="/example/keepalive/list" />
+    <van-cell title="Canvas" is-link to="/example/canvas/editTemplate" />
   </div>
 </template>
 
@@ -12,7 +25,7 @@ export default {
     this.isFirstEnter = true;
   },
   beforeRouteEnter(to, from, next) {
-    if (from.path !== "/home/list") {
+    if (from.path !== "/example/keepalive/list") {
       to.meta.isBack = true;
     }
     next();

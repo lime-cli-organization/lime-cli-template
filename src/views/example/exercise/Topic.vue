@@ -9,30 +9,33 @@
 <script>
 // name > components > mixins > props > data > computed > watch > filter > 钩子函数 > methods
 export default {
-  name: 'Topic',
+  name: "Topic",
   data() {
     return {
       backData: {
-        preId: '',
+        preId: "",
         TopicInfo: {},
-        nextId: '',
+        nextId: "",
       },
     };
   },
   watch: {
-    '$route.params': {
+    "$route.params": {
       handler() {
         // 路由变化做出响应
-        console.log('params change');
+        console.log("params change");
       },
       deep: true,
     },
+  },
+  created() {
+    console.log("created");
   },
   methods: {
     nextTopic() {
       const id = Number(this.$route.params.id) + 1;
       this.$router.push({
-        path: `/online/topic/${id}`,
+        path: `/example/exercise/topic/${id}`,
       });
     },
   },

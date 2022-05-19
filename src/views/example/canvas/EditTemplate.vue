@@ -36,10 +36,10 @@
   </div>
 </template>
 <script>
-import { paperSlider, templateRead } from '@/apis/canvas';
-import splitPane from 'vue-splitpane';
+import { paperSlider, templateRead } from "@/apis/canvas";
+import splitPane from "vue-splitpane";
 export default {
-  name: 'CheckTopic',
+  name: "EditTemplate",
   components: {
     splitPane,
   },
@@ -80,10 +80,10 @@ export default {
   mounted() {
     this.initCanvasWrapper = this.$refs.canvasWrapper.getBoundingClientRect();
     this.canvas = this.$refs.canvas;
-    this.ctx = this.canvas.getContext('2d');
+    this.ctx = this.canvas.getContext("2d");
     this.resize();
     let _this = this;
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       _this.resize();
     });
     this.parseJson();
@@ -91,7 +91,7 @@ export default {
   methods: {
     parseJson() {
       const { templateRead } = this;
-      console.log(templateRead.split('\r\n'));
+      console.log(templateRead.split("\r\n"));
     },
     resize() {
       const canvasWrapper = this.$refs.canvasWrapper.getBoundingClientRect();
@@ -127,7 +127,7 @@ export default {
     },
     drawRect(x, y, width, height) {
       this.ctx.beginPath();
-      this.ctx.strokeStyle = 'red';
+      this.ctx.strokeStyle = "red";
       this.ctx.lineWidth = 1;
       this.ctx.strokeRect(x, y, width, height);
     },

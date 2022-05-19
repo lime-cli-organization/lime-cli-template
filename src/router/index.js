@@ -33,24 +33,6 @@ const routes = [
     },
   },
   {
-    path: '/home/list',
-    name: 'List',
-    component: () => import(/* webpackChunkName: "[home]" */ '../views/home/List.vue'),
-    meta: {
-      title: '首页跳转列表',
-      keepAlive: true,
-      isBack: false,
-    },
-  },
-  {
-    path: '/home/list/detail',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "[home]" */ '../views/home/ListDetail.vue'),
-    meta: {
-      title: '首页跳转列表 三级详情',
-    },
-  },
-  {
     path: '/about',
     name: 'about',
     component: () => import(/* webpackChunkName: "[about]" */ '../views/About.vue'),
@@ -69,25 +51,46 @@ const routes = [
     },
   },
   {
-    path: '/canvas/checkTopic',
-    name: 'checkTopic',
-    component: () => import(/* webpackChunkName: "[canvas]" */ '../views/canvas/CheckTopic.vue'),
+    path: '/example/canvas/editTemplate',
+    name: 'EditTemplate',
+    component: () => import(/* webpackChunkName: "[canvas]" */ '../views/example/canvas/EditTemplate.vue'),
+  },
+
+  {
+    path: '/example/keepalive/list',
+    name: 'AliveList',
+    component: () => import(/* webpackChunkName: "[home]" */ '../views/example/keepalive/List.vue'),
+    meta: {
+      title: '列表页',
+      keepAlive: true,
+      isBack: false,
+    },
   },
   {
-    path: '/online/topics',
-    name: 'onLineTopics',
-    component: () => import(/* webpackChunkName: "[topics]" */ '../views/onLine/Topics.vue'),
+    path: '/example/keepalive/detail',
+    name: 'AliveDetail',
+    component: () => import(/* webpackChunkName: "[home]" */ '../views/example/keepalive/Detail.vue'),
     meta: {
-      title: '答题',
+      title: '详情页',
+      keepAlive: false,
+    },
+  },
+
+  {
+    path: '/example/exercise/visibleControl',
+    name: 'VisibleControl',
+    component: () => import(/* webpackChunkName: "[exercise]" */ '../views/example/exercise/VisibleControl.vue'),
+    meta: {
+      title: '答题-一次性全量-显示隐藏',
       keepAlive: true,
     },
   },
   {
-    path: '/online/topic/:id',
-    name: 'onLineTopic',
-    component: () => import(/* webpackChunkName: "[topic]" */ '../views/onLine/Topic.vue'),
+    path: '/example/exercise/topic/:id',
+    name: 'Topic',
+    component: () => import(/* webpackChunkName: "[exercise]" */ '../views/example/exercise/Topic.vue'),
     meta: {
-      title: '答题',
+      title: '答题-一个一个-页面一题',
       keepAlive: true,
     },
   },
@@ -97,6 +100,22 @@ const routes = [
     component: () => import(/* webpackChunkName: "[calendar]" */ '@/views/example/Calendar.vue'),
     meta: {
       title: '日历',
+    },
+  },
+  {
+    path: '/example/downloadPDFZip',
+    name: 'DownloadPDFZip',
+    component: () => import(/* webpackChunkName: "[DownloadPDFZip]" */ '@/views/example/DownloadPDFZip.vue'),
+    meta: {
+      title: 'PDF压缩下载',
+    },
+  },
+  {
+    path: '/example/transformData',
+    name: 'TransformData',
+    component: () => import(/* webpackChunkName: "[TransformData]" */ '../views/example/TransformData.vue'),
+    meta: {
+      title: '数据解析',
     },
   },
 ];
