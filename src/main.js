@@ -7,6 +7,8 @@ import store from './store';
 import './styles/reset.css';
 // 变量样式
 import './styles/variable.less';
+// svg组件
+import './icons/index.js';
 
 Vue.config.productionTip = false;
 import { Button, Icon, Loading, Overlay, RadioGroup, Radio, Cell } from 'vant';

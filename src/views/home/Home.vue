@@ -15,6 +15,7 @@
     />
     <van-cell title="页面缓存" is-link to="/example/keepalive/list" />
     <van-cell title="Canvas" is-link to="/example/canvas/editTemplate" />
+    <van-cell title="Svg" is-link to="/example/svg" />
   </div>
 </template>
 

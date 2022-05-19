@@ -118,6 +118,14 @@ const routes = [
       title: '数据解析',
     },
   },
+  {
+    path: '/example/svg',
+    name: 'Svg',
+    component: () => import(/* webpackChunkName: "[Svg]" */ '../views/example/Svg.vue'),
+    meta: {
+      title: 'Svg',
+    },
+  },
 ];
 
 const router = new VueRouter({
