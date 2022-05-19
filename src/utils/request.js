@@ -6,6 +6,7 @@ import { getCookie, delCookie } from '@/utils/storage';
 
 const service = axios.create({
   withCredentials: true,
+  baseURL: 'http://114.55.115.86:8001',
 });
 
 // 页面发起的请求路径，通过长度控制pageLoading的显示
@@ -19,6 +20,9 @@ service.interceptors.request.use(
     }
     const { url } = config;
     queue[url] = url;
+    // 不需要token的接口直接返回
+    // if(config)
+    console.log(config);
     // 设置token
     config.headers.Authorization = 'Bear ' + getCookie('token');
     return config;
@@ -107,6 +111,8 @@ const handleError = (response) => {
       });
   }
 };
+
+export default service;
 
 export function request(options) {
   return service(options).then().then();

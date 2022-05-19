@@ -1,8 +1,5 @@
 <template>
   <div class="wrapper">
-    <div class="calendar_wrapper">
-      <LCalendar />
-    </div>
     <div class="login">
       <input type="text" v-model="userName" />
       <input type="text" v-model="password" />
@@ -13,20 +10,18 @@
   </div>
 </template>
 <script>
-import { GetImage, LoginWithCode } from '@/apis/Authoriza';
-import { setCookie } from '@/utils/storage';
-import LCalendar from '@/components/System/LCalendar.vue';
+import { GetImage, LoginWithCode } from "@/apis/Authoriza";
+import { setCookie } from "@/utils/storage";
 export default {
-  name: 'Login',
-  components: { LCalendar },
+  name: "Login",
   data() {
     return {
       // 用户名 & 密码
-      userName: '',
-      password: '',
-      code: '',
-      key: '',
-      verifySrc: '',
+      userName: "",
+      password: "",
+      code: "",
+      key: "",
+      verifySrc: "",
     };
   },
   created() {
@@ -42,7 +37,7 @@ export default {
           },
         },
       } = await GetImage();
-      this.verifySrc = 'data:' + contentType + ';base64,' + fileContents;
+      this.verifySrc = "data:" + contentType + ";base64," + fileContents;
       this.key = key;
     },
     async doLogin() {
@@ -54,9 +49,9 @@ export default {
         key: this.key,
         code: this.code,
       });
-      setCookie('token', data);
+      setCookie("token", data);
       this.$router.push({
-        path: '/home',
+        path: "/home",
       });
     },
   },
@@ -74,9 +69,5 @@ export default {
     line-height: 2;
     margin-bottom: 8px;
   }
-}
-.calendar_wrapper {
-  width: 375px;
-  border: 1px solid red;
 }
 </style>

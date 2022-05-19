@@ -35,8 +35,7 @@ const routes = [
   {
     path: '/home/list',
     name: 'List',
-    component: () =>
-      import(/* webpackChunkName: "[home]" */ '../views/home/List.vue'),
+    component: () => import(/* webpackChunkName: "[home]" */ '../views/home/List.vue'),
     meta: {
       title: '首页跳转列表',
       keepAlive: true,
@@ -46,8 +45,7 @@ const routes = [
   {
     path: '/home/list/detail',
     name: 'About',
-    component: () =>
-      import(/* webpackChunkName: "[home]" */ '../views/home/ListDetail.vue'),
+    component: () => import(/* webpackChunkName: "[home]" */ '../views/home/ListDetail.vue'),
     meta: {
       title: '首页跳转列表 三级详情',
     },
@@ -55,8 +53,7 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: () =>
-      import(/* webpackChunkName: "[about]" */ '../views/About.vue'),
+    component: () => import(/* webpackChunkName: "[about]" */ '../views/About.vue'),
     meta: {
       title: '关于',
       keepAlive: false,
@@ -65,8 +62,7 @@ const routes = [
   {
     path: '/mine',
     name: 'mine',
-    component: () =>
-      import(/* webpackChunkName: "[mine]" */ '../views/mine/Mine.vue'),
+    component: () => import(/* webpackChunkName: "[mine]" */ '../views/mine/Mine.vue'),
     meta: {
       title: '我的',
       keepAlive: true,
@@ -75,16 +71,12 @@ const routes = [
   {
     path: '/canvas/checkTopic',
     name: 'checkTopic',
-    component: () =>
-      import(
-        /* webpackChunkName: "[canvas]" */ '../views/canvas/CheckTopic.vue'
-      ),
+    component: () => import(/* webpackChunkName: "[canvas]" */ '../views/canvas/CheckTopic.vue'),
   },
   {
     path: '/online/topics',
     name: 'onLineTopics',
-    component: () =>
-      import(/* webpackChunkName: "[topics]" */ '../views/onLine/Topics.vue'),
+    component: () => import(/* webpackChunkName: "[topics]" */ '../views/onLine/Topics.vue'),
     meta: {
       title: '答题',
       keepAlive: true,
@@ -93,11 +85,18 @@ const routes = [
   {
     path: '/online/topic/:id',
     name: 'onLineTopic',
-    component: () =>
-      import(/* webpackChunkName: "[topic]" */ '../views/onLine/Topic.vue'),
+    component: () => import(/* webpackChunkName: "[topic]" */ '../views/onLine/Topic.vue'),
     meta: {
       title: '答题',
       keepAlive: true,
+    },
+  },
+  {
+    path: '/example/calendar',
+    name: 'Calendar',
+    component: () => import(/* webpackChunkName: "[calendar]" */ '@/views/example/Calendar.vue'),
+    meta: {
+      title: '日历',
     },
   },
 ];

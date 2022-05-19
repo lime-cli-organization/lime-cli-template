@@ -1,31 +1,18 @@
 <template>
-  <div>
-    <h1>This is a home page</h1>
-    <van-button type="primary" @click="navigatorTo">list按钮</van-button>
-    <LSelect
-      :props="{
-        value: 'id',
-        label: 'name',
-      }"
-      separator="/"
-      :filterable="true"
-      @change="selectChange"
-    />
+  <div class="wrapper">
+    <van-cell title="日历" is-link to="/example/calendar" />
+    <van-cell title="日历" is-link to="/example/calendar" />
   </div>
 </template>
 
 <script>
-import LSelect from '@/components/System/LSelect.vue';
 export default {
-  name: 'Home',
-  components: {
-    LSelect,
-  },
+  name: "Home",
   created() {
     this.isFirstEnter = true;
   },
   beforeRouteEnter(to, from, next) {
-    if (from.path !== '/home/list') {
+    if (from.path !== "/home/list") {
       to.meta.isBack = true;
     }
     next();
@@ -40,17 +27,28 @@ export default {
   methods: {
     init() {
       console.log(
-        '================ 搜索条件初始化 & 数据请求 ================='
+        "================ 搜索条件初始化 & 数据请求 ================="
       );
-    },
-    navigatorTo() {
-      this.$router.push({
-        path: '/home/list',
-      });
-    },
-    selectChange(value) {
-      console.log(value);
     },
   },
 };
 </script>
+<style lang="less" scoped>
+.wrapper {
+  padding: 20px;
+}
+.van-cell {
+  margin: 0 0 12px;
+  align-items: center;
+  justify-content: space-between;
+  color: #323233;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  border-radius: 40px;
+  background: #f7f8fa;
+}
+.van-cell__title {
+  text-align: left;
+}
+</style>

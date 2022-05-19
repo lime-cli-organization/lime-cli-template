@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'TabBar',
+  name: "TabBar",
   props: {
     data: {
       required: true,
@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      currentActive: '', // 导航active状态path
+      currentActive: "", // 导航active状态path
     };
   },
   watch: {
@@ -63,16 +63,17 @@ export default {
 
 <style lang="less" scoped>
 .tabbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
   height: 50px;
   width: 100vw;
   position: fixed;
   bottom: 0;
   z-index: 99;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   border-top: 1px solid #eeeeee;
-  justify-content: space-around;
+  background-color: white;
 }
 .tab_item {
   width: 100%;

@@ -6,7 +6,7 @@
       </span>
     </div>
     <button class="toggle" @click="toggleCalendar">这是一个折叠箭头</button>
-    <template v-if="showCalendar">
+    <template v-if="IsCalendarVisible">
       <div class="header">
         <button @click="changeMonth('prev')">上</button>
         <span>{{ year }}年{{ month + 1 }}月</span>
@@ -16,25 +16,36 @@
         <table>
           <thead>
             <tr>
-              <th v-if="weekBegin === 'sunday'">日</th>
-              <th>一</th>
-              <th>二</th>
-              <th>三</th>
-              <th>四</th>
-              <th>五</th>
-              <th>六</th>
-              <th v-if="weekBegin === 'monday'">日</th>
+              <th v-if="weekBegin === 'sunday'">周日</th>
+              <th>周一</th>
+              <th>周二</th>
+              <th>周三</th>
+              <th>周四</th>
+              <th>周五</th>
+              <th>周六</th>
+              <th v-if="weekBegin === 'monday'">周日</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in dateArr" :key="index + 'b'">
-              <td
-                v-for="date in item"
-                :key="date + 'a'"
-                :class="dynamicClass(date)"
-              >
-                {{ date.replace('prev', '').replace('next', '') }}
-                <img v-if="imgClass(date)" src="@/assets/finger.png" />
+              <td v-for="date in item" :key="date.value">
+                <div class="content">
+                  <!-- 
+                    顺序：
+                      之前
+                        补签
+                        签过到的
+                      当前&之后
+                        日期
+                        活动
+                        连签积分
+                   -->
+                  <slot name="content" :type="getType(date)" :date="date">
+                  </slot>
+                </div>
+                <slot name="date">
+                  {{ date.value }}
+                </slot>
               </td>
             </tr>
           </tbody>
@@ -46,15 +57,30 @@
 <script>
 // name > components > mixins > props > data > computed > watch > filter > 钩子函数 > methods
 export default {
-  name: 'LCalendar',
+  name: "LCalendar",
+  props: {
+    current: {
+      require: true,
+      default: () => {
+        return new Date();
+      },
+    },
+    // checkIn:{
+    //   type: Array
+    // },
+    weekBegin: {
+      validator: function (value) {
+        return ["monday", "sunday"].indexOf(value) !== -1;
+      },
+      default: "monday",
+    },
+  },
   data() {
     return {
-      // current: new Date(2021, 9, 12),
-      current: new Date(2022, 3, 17),
-      year: '',
-      month: '', // month + 1 === 当前月份
-      day: '', // 一周中的第几天
-      date: '', // 一个月的第几天
+      year: "",
+      month: "", // month + 1 === 当前月份
+      day: "", // 一周中的第几天
+      date: "", // 一个月的第几天
       dateArr: [],
       checkIn: [
         new Date(2021, 11, 26),
@@ -63,11 +89,10 @@ export default {
         new Date(2022, 3, 12),
         new Date(2021, 3, 15),
         new Date(2022, 3, 16),
-        new Date(2022, 3, 17),
+        new Date(2022, 4, 17),
       ],
-      activeArr: [new Date(2022, 3, 20), new Date(2022, 3, 4)],
-      showCalendar: false,
-      weekBegin: 'monday', // monday | sunday
+      activeArr: [new Date(2022, 4, 20), new Date(2022, 4, 28)],
+      IsCalendarVisible: true,
     };
   },
   computed: {
@@ -108,11 +133,10 @@ export default {
     this.day = this.current.getDay();
     this.date = this.current.getDate();
     this.getCalendar();
-    console.log(this.getCurrentWeek(this.current));
   },
   methods: {
     toggleCalendar() {
-      this.showCalendar = !this.showCalendar;
+      this.IsCalendarVisible = !this.IsCalendarVisible;
     },
     imgClass(date) {
       const dateFull = this.getFullDate(date);
@@ -133,7 +157,7 @@ export default {
       const monthDays = this.getMonthTotalDay(month);
       const date = new Date(year, month, 1);
       const beginDayOnWeek =
-        this.weekBegin === 'monday'
+        this.weekBegin === "monday"
           ? date.getDay() === 0
             ? 6
             : date.getDay() - 1
@@ -150,11 +174,14 @@ export default {
         for (let j = 0; j < 7; j++) {
           temp++;
           if (temp - beginDayOnWeek <= 0) {
-            arr[i][j] = 'prev' + (prevMonthDays - prevMonthWeekDiff--);
+            arr[i][j] = {
+              type: "prev",
+              value: prevMonthDays - prevMonthWeekDiff--,
+            };
           } else if (temp - beginDayOnWeek > monthDays) {
-            arr[i][j] = 'next' + nextMonthBegin++;
+            arr[i][j] = { type: "next", value: nextMonthBegin++ };
           } else {
-            arr[i][j] = temp - beginDayOnWeek + '';
+            arr[i][j] = { type: "current", value: temp - beginDayOnWeek };
           }
         }
       }
@@ -167,14 +194,14 @@ export default {
      * @param { 'sunday' | 'monday' } weekBegin 周起始是周日 or 周一
      * @returns {Number} 一个月的周数
      */
-    getWeeks(year, month, weekBegin = 'monday') {
+    getWeeks(year, month, weekBegin = "monday") {
       const monthDay = this.getMonthTotalDay(month);
       const beginDate = new Date(year, month, 1);
       const endDate = new Date(year, month, monthDay);
       let weekStart = beginDate.getDay();
       let weekEnd = endDate.getDay();
       let firstWeekDays, lastWeekDays;
-      if (weekBegin === 'sunday') {
+      if (weekBegin === "sunday") {
         firstWeekDays = weekStart === 0 ? 7 : 7 - weekStart;
         lastWeekDays = weekEnd === 0 ? 1 : weekEnd + 1;
       } else {
@@ -200,7 +227,7 @@ export default {
       return arr;
     },
     changeMonth(type) {
-      if (type === 'prev') {
+      if (type === "prev") {
         if (this.month === 0) {
           this.year--;
           this.month = 11;
@@ -222,17 +249,17 @@ export default {
       const { year: currentYear, month: currentMonth } = this;
       let year = currentYear,
         month = currentMonth;
-      date = date + '';
-      if (date.search('prev') !== -1) {
-        date = Number(date.replace('prev', ''));
+      date = date + "";
+      if (date.search("prev") !== -1) {
+        date = Number(date.replace("prev", ""));
         if (currentMonth === 0) {
           year--;
           month = 11;
         } else {
           month--;
         }
-      } else if (date.search('next') !== -1) {
-        date = Number(date.replace('next', ''));
+      } else if (date.search("next") !== -1) {
+        date = Number(date.replace("next", ""));
         if (currentMonth === 11) {
           year++;
           month = 0;
@@ -249,19 +276,69 @@ export default {
       const arrTime = dateArr.map((item) => item.getTime());
       return arrTime.indexOf(date.getTime()) !== -1;
     },
-    dynamicClass(date) {
-      let ret = '';
-      if (date.search('prev') !== -1) ret = 'prev ';
-      if (date.search('next') !== -1) ret = 'next ';
+    // 和当前时间比较
+    compareData(date) {
       const dateFull = this.getFullDate(date);
-      if (this.current.getTime() == dateFull.getTime()) {
-        ret += 'current ';
+      if (this.getCurrentDate().getTime() == dateFull.getTime()) {
+        return 0;
+      } else if (this.getCurrentDate().getTime() > dateFull.getTime()) {
+        return -1;
+      } else if (this.getCurrentDate().getTime() < dateFull.getTime()) {
+        return 1;
+      }
+    },
+    // 获取当前日期
+    getCurrentDate() {
+      const { current } = this;
+      const today = new Date(
+        current.getFullYear(),
+        current.getMonth(),
+        current.getDate()
+      );
+      return today;
+    },
+    // 类型
+    getType(item) {
+      const { type, value: date } = item;
+      const dateFull = this.getFullDate(date);
+      let ret = [];
+      ret.push(type);
+      if (this.getCurrentDate().getTime() == dateFull.getTime()) {
+        ret.push("today");
+      } else if (this.getCurrentDate().getTime() > dateFull.getTime()) {
+        ret.push("preDate");
+      } else if (this.getCurrentDate().getTime() < dateFull.getTime()) {
+        ret.push("nextDate");
       }
       if (this.arrContains(this.checkIn, dateFull)) {
-        ret += 'check_in ';
+        ret.push("check_in");
       }
+      if (this.arrContains(this.activeArr, dateFull)) {
+        ret.push("active");
+      }
+
       return ret;
     },
+    // dynamicClass(date) {
+    //   let ret = "";
+    //   if (date.search("prev") !== -1) ret = "prevMonth ";
+    //   if (date.search("next") !== -1) ret = "nextMonth ";
+    //   const dateFull = this.getFullDate(date);
+    //   if (this.getCurrentDate().getTime() == dateFull.getTime()) {
+    //     ret += "current ";
+    //   } else if (this.getCurrentDate().getTime() > dateFull.getTime()) {
+    //     ret += "preDate ";
+    //   } else if (this.getCurrentDate().getTime() < dateFull.getTime()) {
+    //     ret += "nextDate ";
+    //   }
+    //   if (this.arrContains(this.checkIn, dateFull)) {
+    //     ret += "check_in ";
+    //   }
+    //   if (this.arrContains(this.activeArr, dateFull)) {
+    //     ret += "active ";
+    //   }
+    //   return ret;
+    // },
   },
 };
 </script>
@@ -299,36 +376,25 @@ export default {
     line-height: 3;
     td {
       position: relative;
-      width: calc(100% / 7);
-      background-color: lightgreen;
-      color: green;
-      img {
-        position: absolute;
-        z-index: 1;
-        width: 57px;
-        height: 42px;
-        bottom: -21px;
-        animation: move 1s infinite;
-      }
-      &.current {
-        background-color: lightblue;
-        color: blue;
-        border: 1px solid blue;
-      }
-      &.prev,
-      &.next {
-        background-color: grey;
-        color: darkgray;
-      }
-      &.check_in {
-        border: 1px solid palevioletred;
+      .content {
+        width: 43px;
+        height: 55px;
+        margin: 0 auto;
+        color: rgb(243, 221, 174);
         font-weight: bold;
-        background-color: pink;
-        color: palevioletred;
+        font-size: 18px;
+        border: 1px solid rgb(243, 221, 174);
+        border-radius: 4px;
+      }
+      span {
+        line-height: 12px;
+        margin-bottom: 12px;
+        color: #666666;
       }
     }
   }
 }
+
 @keyframes move {
   from {
     transform: scale(1);
@@ -341,6 +407,6 @@ export default {
   }
 }
 table {
-  cursor: url('@/assets/finger.png'), pointer;
+  cursor: url("@/assets/finger.png"), pointer;
 }
 </style>
