@@ -126,6 +126,14 @@ const routes = [
       title: 'Svg',
     },
   },
+  {
+    path: '/example/echarts',
+    name: 'Echarts',
+    component: () => import(/* webpackChunkName: "[Echarts]" */ '../views/example/Echarts.vue'),
+    meta: {
+      title: 'Echarts',
+    },
+  },
 ];
 
 const router = new VueRouter({

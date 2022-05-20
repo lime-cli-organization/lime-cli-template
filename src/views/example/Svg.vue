@@ -8,7 +8,7 @@
 <script>
 import LSvg from "@/components/System/LSvg.vue";
 export default {
-  name: "SvgTest",
+  name: "Svg",
   components: {
     LSvg,
   },
