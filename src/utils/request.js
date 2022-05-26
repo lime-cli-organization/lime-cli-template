@@ -5,8 +5,8 @@ import { Toast } from 'vant';
 import { getCookie, delCookie } from '@/utils/storage';
 
 const service = axios.create({
-  withCredentials: true,
-  baseURL: 'http://114.55.115.86:8001',
+  // withCredentials: true,
+  baseURL: 'http://114.55.115.86:8002',
 });
 
 // 页面发起的请求路径，通过长度控制pageLoading的显示
@@ -22,9 +22,8 @@ service.interceptors.request.use(
     queue[url] = url;
     // 不需要token的接口直接返回
     // if(config)
-    console.log(config);
     // 设置token
-    config.headers.Authorization = 'Bear ' + getCookie('token');
+    config.headers.Authorization = 'Bearer ' + getCookie('token');
     return config;
   },
   (error) => {
@@ -41,12 +40,12 @@ service.interceptors.response.use(
     if (Object.keys(queue).length === 0) {
       store.commit('setPageLoading', false);
     }
-    const { code, data } = response.data;
+    const { code } = response.data;
     if (code === 200) {
-      return data;
+      return response.data;
     } else {
       // http请求200， 业务状态码非200
-      handleError(response);
+      // handleError(response);
       return Promise.reject(response);
     }
   },
@@ -58,7 +57,8 @@ service.interceptors.response.use(
       });
     }
     // http请求非200
-    handleError(error.response);
+    console.log('response error');
+    // handleError(error.response);
     return Promise.reject(error.response);
   }
 );
@@ -114,6 +114,6 @@ const handleError = (response) => {
 
 export default service;
 
-export function request(options) {
-  return service(options).then().then();
-}
+export const request = (options) => {
+  return service.request(options);
+};

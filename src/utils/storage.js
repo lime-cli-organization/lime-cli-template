@@ -7,9 +7,7 @@
 export const setCookie = (name, value, delay = 8) => {
   const exp = new Date();
   exp.setTime(exp.getTime() + 1000 * 60 * 60 * delay);
-  document.cookie = `${name}=${escape(
-    value
-  )};expires=${exp.toGMTString()};path=/`;
+  document.cookie = `${name}=${escape(value)};expires=${exp};path=/`;
 };
 
 export const getCookie = (name) => {

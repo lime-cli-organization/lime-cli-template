@@ -1,3 +1,5 @@
+// polifill
+import 'babel-polyfill';
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
@@ -11,8 +13,8 @@ import './styles/variable.less';
 import './icons/index.js';
 
 Vue.config.productionTip = false;
-import { Button, Icon, Loading, Overlay, RadioGroup, Radio, Cell } from 'vant';
-Vue.use(Button).use(Icon).use(Loading).use(Overlay).use(RadioGroup).use(Radio).use(Cell);
+import { Button, Icon, Loading, Overlay, RadioGroup, Radio, Cell, PullRefresh, List } from 'vant';
+Vue.use(Button).use(Icon).use(Loading).use(Overlay).use(RadioGroup).use(Radio).use(Cell).use(PullRefresh).use(List);
 
 import '@/directive/index';
 

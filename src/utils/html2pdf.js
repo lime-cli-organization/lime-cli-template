@@ -6,6 +6,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { Toast } from 'vant';
 
 const page = {
   width: 595.28,
@@ -14,6 +15,10 @@ const page = {
 export default {
   install(Vue) {
     Vue.prototype.html2pdf = (selector, title) => {
+      const toastInstance = Toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+      });
       const element = document.querySelectorAll(selector);
       const options = {
         scale: 12, // 缩放比例，提高生成图片清晰度
@@ -70,8 +75,9 @@ export default {
         });
       });
       Promise.all(promiseArr).then(() => {
-        zip.generateAsync({ type: 'blob' }).then((content) => {
+        zip.generateAsync({ type: 'blob' }).then(async (content) => {
           saveAs(content, 'download.zip');
+          toastInstance.clear();
         });
       });
     };

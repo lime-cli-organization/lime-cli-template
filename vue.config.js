@@ -43,6 +43,7 @@ module.exports = defineConfig({
   },
   // 其他配置
   configureWebpack: (config) => {
+    config.entry.app = ['babel-polyfill', './src/main.js'];
     if (isProduction) {
       // 自动更新
       config.plugins.push(

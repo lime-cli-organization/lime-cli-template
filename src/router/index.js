@@ -134,6 +134,22 @@ const routes = [
       title: 'Echarts',
     },
   },
+  {
+    path: '/example/animation',
+    name: 'Animation',
+    component: () => import(/* webpackChunkName: "[Animation]" */ '../views/example/Animation.vue'),
+    meta: {
+      title: 'Animation',
+    },
+  },
+  {
+    path: '/example/swiper',
+    name: 'Swiper',
+    component: () => import(/* webpackChunkName: "[Swiper]" */ '../views/example/Swiper.vue'),
+    meta: {
+      title: 'Swiper',
+    },
+  },
 ];
 
 const router = new VueRouter({

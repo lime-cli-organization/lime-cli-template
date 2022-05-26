@@ -17,6 +17,8 @@
     <van-cell title="Canvas" is-link to="/example/canvas/editTemplate" />
     <van-cell title="Svg" is-link to="/example/svg" />
     <van-cell title="Echarts" is-link to="/example/echarts" />
+    <van-cell title="动画" is-link to="/example/animation" />
+    <van-cell title="Swiper" is-link to="/example/swiper" />
   </div>
 </template>
 
