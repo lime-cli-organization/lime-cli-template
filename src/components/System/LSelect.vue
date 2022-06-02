@@ -194,7 +194,7 @@ export default {
       cursor: pointer;
       text-align: left;
       &.active {
-        color: #409eff;
+        color: @primary;
         font-weight: 700;
         background-color: #f5f7fa;
       }
@@ -210,10 +210,7 @@ export default {
   border: 1px solid #dcdfe6;
   border-radius: 4px;
   &.focus {
-    border-color: #409eff;
-  }
-  &:hover {
-    border-color: #c0c4cc;
+    border-color: @primary;
   }
   input {
     width: calc(100% - 4em);

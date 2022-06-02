@@ -85,9 +85,9 @@ export default {
     width: 40%;
     padding: 10px;
     &.confirm {
-      border: 1px solid #409eff;
+      border: 1px solid @primary;
       color: white;
-      background-color: #409eff;
+      background-color: @primary;
     }
     &.cancel {
       border: 1px solid rgb(248, 248, 248);

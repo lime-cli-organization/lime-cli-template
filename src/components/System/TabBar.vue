@@ -82,7 +82,7 @@ export default {
   align-items: center;
   font-size: 12px;
   &.tab_active {
-    color: #1296db;
+    color: @primary;
   }
   img {
     width: 25px;

@@ -40,6 +40,27 @@ module.exports = defineConfig({
         ],
       })
       .end();
+    // 全局引入 less 变量
+    const types = ['vue-modules', 'vue', 'normal-modules', 'normal'];
+    types.forEach((type) =>
+      config.module
+        .rule('less')
+        .oneOf(type)
+        .use('style-resource')
+        .loader('style-resources-loader')
+        .options({
+          patterns: [path.resolve(__dirname, './src/styles/variable.less')],
+        })
+    );
+  },
+  css: {
+    loaderOptions: {
+      less: {
+        lessOptions: {
+          javascriptEnabled: true,
+        },
+      },
+    },
   },
   // 其他配置
   configureWebpack: (config) => {

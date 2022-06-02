@@ -7,8 +7,6 @@ import store from './store';
 
 // 清空样式
 import './styles/reset.css';
-// 变量样式
-import './styles/variable.less';
 // svg组件
 import './icons/index.js';
 // day.js
