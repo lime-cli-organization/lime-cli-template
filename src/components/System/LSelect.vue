@@ -1,155 +1,239 @@
 <template>
   <div class="l_select">
-    <div class="input_box" ref="input_box" @click="toggleDropDown">
+    {{ selectedIdKeys }}
+    <div
+      :class="isVisible ? 'input_wrapper focus' : 'input_wrapper'"
+      @click="toggle"
+    >
       <input
         type="text"
-        v-model="inputText"
-        :disabled="isDisable"
+        :value="labelText"
+        :placeholder="placeholder"
         :readonly="!canInput"
-        @input="handleInput"
+        @input="inputSearch"
       />
-      <div class="icon">
-        <van-icon
-          name="arrow-down"
-          :class="isDropdownVisible ? 'rotate' : ''"
+      <div class="icon_wrapper">
+        <template v-if="isClearShow">
+          <LSvg
+            iconName="close_fill"
+            color="#dcdfe6"
+            @click.native.stop="clearSelected"
+          />
+        </template>
+        <LSvg
+          iconName="arrow_down_line"
+          color="#dcdfe6"
+          :className="isVisible ? 'arrow down ' : 'arrow '"
         />
       </div>
     </div>
-    <div
-      class="mask"
-      v-if="isDropdownVisible"
-      @click="isDropdownVisible = false"
-    >
-      <ul class="dropdown" :style="`left:${style.left}px; top:${style.top}px;`">
-        <li
-          class="dropdown_item"
-          :class="selectedItems === item ? 'active' : ''"
-          v-for="(item, index) in data"
-          :key="index"
-          @click="doSelect(item)"
-        >
-          这是{{ item.name }}个选项
-        </li>
-      </ul>
+    <div class="popper" v-show="isVisible">
+      <div
+        :class="isSelected(item[idKey]) ? 'item active' : 'item'"
+        v-for="item in filterList"
+        :key="item[idKey]"
+        @click="selectRow(item)"
+      >
+        {{ item[labelKey] }}
+      </div>
     </div>
   </div>
 </template>
 <script>
 // name > components > mixins > props > data > computed > watch > filter > 钩子函数 > methods
+import LSvg from "./LSvg.vue";
 export default {
-  name: 'LSelect',
-  props: [
-    'isMultiple', // 是否多选
-    'value', // 选中的key的值
-    'props', // 属性， value,label
-    'clearable', // 是否可清除
-    'separator', // 分隔符
-    'isDisable', // 是否禁用
-    'filterable', // 是否可搜索
-  ],
+  name: "LSelect",
+  components: {
+    LSvg,
+  },
+  props: {},
   data() {
     return {
+      inputText: "", // 输入的值
+      placeholder: "请选择",
+      idKey: "name",
+      labelKey: "value",
       data: [
-        { id: 1, name: 12 },
-        { id: 2, name: 23 },
-        { id: 3, name: 34 },
-        { id: 4, name: 45 },
+        {
+          name: 1,
+          value: "这是一条数据",
+        },
+        {
+          name: 2,
+          value: "这是一条数据2",
+        },
+        {
+          name: 3,
+          value: "这是一条数据3",
+        },
+        {
+          name: 4,
+          value: "这是一条数据4",
+        },
+        {
+          name: 5,
+          value: "这是一条数据5",
+        },
       ],
-      style: {},
-      isDropdownVisible: false,
-      selectedItems: [], // 选中的数据
+      canClear: true,
+      filterable: true, // 本地检索
+      remote: true, // 远程搜索 && remoteMethod
+      canInsert: true, // 创建新条目
+      isMultiple: true,
+      isVisible: false,
+      selectedIdKeys: [],
     };
   },
-  created() {
-    this.idKey = this.props.value;
-  },
+  created() {},
   computed: {
-    inputText: {
-      get() {
-        const lableKey = this.props.label;
-        return this.selectedItems[lableKey];
-      },
+    labelText() {
+      const { filterList, selectedIdKeys, idKey, labelKey } = this;
+      const textStr = filterList
+        .filter((item) => selectedIdKeys.indexOf(item[idKey]) !== -1)
+        .map((item) => item[labelKey]);
+      return textStr.join(",");
+    },
+    isClearShow() {
+      return this.canClear && this.selectedIdKeys.length > 0 && !this.isVisible;
     },
     canInput() {
-      return this.filterable;
+      const { filterable, remote, canInsert } = this;
+      return canInsert || filterable || remote;
+    },
+
+    filterList() {
+      const { data, labelKey, filterable, inputText } = this;
+      if (filterable) {
+        return data.filter((item) => item[labelKey].indexOf(inputText) !== -1);
+      }
+      return data;
     },
   },
   watch: {
-    isDropdownVisible: {
+    selectedIdKeys: {
       handler(newVal) {
-        if (!newVal) {
-          this.$emit('change', this.selectedItems);
+        const { filterList, idKey } = this;
+        const selectedItems = filterList.filter(
+          (item) => newVal.indexOf(item[idKey]) !== -1
+        );
+        this.$emit("change", selectedItems);
+      },
+    },
+    labelText: {
+      handler(newVal) {
+        console.log(newVal);
+        if (newVal === "") {
+          this.selectedIdKeys = [];
         }
       },
     },
   },
   methods: {
-    toggleDropDown() {
-      const elementRects = this.$refs.input_box.getClientRects()[0];
-      this.style = {
-        left: elementRects.x,
-        top: elementRects.y + elementRects.height,
-      };
-      this.isDropdownVisible = !this.isDropdownVisible;
+    toggle() {
+      this.isVisible = !this.isVisible;
     },
-    doSelect(item) {
-      this.selectedItems = item;
+    closePopper() {
+      this.isVisible = false;
     },
-    handleInput: () => {
-      console.log(this.inputText);
+    selectRow(item) {
+      const { isMultiple, selectedIdKeys, idKey } = this;
+      const unique = item[idKey];
+      if (isMultiple) {
+        selectedIdKeys.indexOf(unique) !== -1
+          ? this.selectedIdKeys.splice(selectedIdKeys.indexOf(unique), 1)
+          : this.selectedIdKeys.push(unique);
+      } else {
+        this.selectedIdKeys = [unique];
+        this.closePopper();
+      }
+    },
+    isSelected(idKey) {
+      const { selectedIdKeys } = this;
+      return selectedIdKeys.indexOf(idKey) !== -1;
+    },
+    clearSelected() {
+      this.selectedIdKeys = [];
+      this.$emit("clear");
+    },
+    inputSearch(e) {
+      console.log(e);
+      // const { labelText } = this;
+      // console.log(labelText);
     },
   },
 };
 </script>
 <style lang="less" scoped>
 .l_select {
+  width: 100%;
+  height: 100%;
   position: relative;
-  width: 150px;
-  background-color: #fff;
+  .popper {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #e4e7ed;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    box-sizing: border-box;
+    margin: 5px 0;
+    overflow: hidden;
+    transition: all 0.5s;
+    .item {
+      font-size: 14px;
+      padding: 0 20px;
+      position: relative;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #606266;
+      height: 34px;
+      line-height: 34px;
+      box-sizing: border-box;
+      cursor: pointer;
+      text-align: left;
+      &.active {
+        color: #409eff;
+        font-weight: 700;
+        background-color: #f5f7fa;
+      }
+    }
+  }
 }
-.input_box {
+
+.input_wrapper {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  border: 1px solid red;
-  margin-left: 12px;
+  justify-content: space-between;
+  height: 100%;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  &.focus {
+    border-color: #409eff;
+  }
+  &:hover {
+    border-color: #c0c4cc;
+  }
   input {
+    width: calc(100% - 4em);
+    height: 100%;
     border: none;
-    line-height: 24px;
-    width: calc(100% - 40px);
+    outline: none;
+    line-height: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
   }
-  .icon {
-    padding: 0 8px;
+  .icon_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
-}
-.mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 99;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0);
-}
-.dropdown {
-  position: absolute;
-  margin-top: 12px;
-  border: 1px solid lightblue;
-  background-color: white;
-  li {
-    line-height: 2;
-    padding: 0 12px;
-    &:hover {
-      background-color: #f5f7fa;
-    }
-    &.active {
-      color: #409eff;
-      font-weight: bold;
+  .arrow {
+    transition: all 0.3s;
+    &.down {
+      transform: rotate(-180deg);
     }
   }
-}
-.rotate {
-  transform: rotate(-180deg);
-  transition: transform 0.3s;
 }
 </style>

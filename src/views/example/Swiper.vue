@@ -38,12 +38,17 @@ export default {
         },
       ],
       swiperOption: {
-        autoplay: false,
+        autoplay: true,
         speed: 500,
         loop: true,
         pagination: {
           el: ".swiper-pagination", //分页器
           clickable: true,
+          renderBullet(index, className) {
+            return `<span class="${className} swiper-pagination-bullet-custom">${
+              index + 1
+            }</span>`;
+          },
         },
         navigation: {
           nextEl: ".swiper-button-next",
@@ -73,7 +78,7 @@ export default {
       background-size: 100%;
       background-position: center center;
       background-repeat: no-repeat;
-      filter: blur(50px);
+      filter: blur(100px);
     }
     img {
       position: absolute;
@@ -82,7 +87,21 @@ export default {
       height: auto;
     }
   }
-
+  /deep/ .swiper-pagination-bullet-custom {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    color: #007aff;
+    opacity: 0.7;
+    background: rgba(53, 53, 53, 0.2);
+    transition: all 0.25s;
+    &.swiper-pagination-bullet-active {
+      opacity: 1;
+      color: white;
+      background: #007aff;
+    }
+  }
   .swiper-button-next,
   .swiper-button-prev {
     width: 28px;

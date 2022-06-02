@@ -111,9 +111,9 @@ const routes = [
     },
   },
   {
-    path: '/example/transformData',
-    name: 'TransformData',
-    component: () => import(/* webpackChunkName: "[TransformData]" */ '../views/example/TransformData.vue'),
+    path: '/example/algorithm',
+    name: 'Algorithm',
+    component: () => import(/* webpackChunkName: "[algorithm]" */ '../views/example/algorithm/Index.vue'),
     meta: {
       title: '数据解析',
     },
@@ -148,6 +148,30 @@ const routes = [
     component: () => import(/* webpackChunkName: "[Swiper]" */ '../views/example/Swiper.vue'),
     meta: {
       title: 'Swiper',
+    },
+  },
+  {
+    path: '/example/external',
+    name: 'External',
+    component: () => import(/* webpackChunkName: "[External]" */ '../views/example/external.vue'),
+    meta: {
+      title: 'math.js,day.js',
+    },
+  },
+  {
+    path: '/example/select',
+    name: 'Select',
+    component: () => import(/* webpackChunkName: "[Select]" */ '../views/example/Select.vue'),
+    meta: {
+      title: 'Select',
+    },
+  },
+  {
+    path: '/example/dialog',
+    name: 'Dialog',
+    component: () => import(/* webpackChunkName: "[Dialog]" */ '../views/example/Dialog.vue'),
+    meta: {
+      title: 'Dialog',
     },
   },
 ];

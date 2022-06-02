@@ -17,8 +17,9 @@ export default {
 .box1 {
   display: block;
   position: relative;
-  width: 602px;
-  line-height: 170px;
+  width: 80vw;
+  box-sizing: border-box;
+  line-height: 70px;
   padding: 10px;
   margin: 30px auto;
   overflow: hidden;
