@@ -60,10 +60,10 @@ export default {
 </script>
 <style>
 .wrapper {
-  padding-bottom: 50px;
+  padding-bottom: 100px;
 }
 .chart_wrapper {
-  width: 375px;
-  height: 350px;
+  width: 750px;
+  height: 700px;
 }
 </style>

@@ -64,7 +64,7 @@ export default {
 <style lang="less" scoped>
 .banner {
   width: 100vw;
-  height: 300px;
+  height: 600px;
   .swiper-slide {
     display: flex;
     align-items: center;
@@ -88,9 +88,9 @@ export default {
     }
   }
   /deep/ .swiper-pagination-bullet-custom {
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
     text-align: center;
     color: #007aff;
     opacity: 0.7;
@@ -104,8 +104,8 @@ export default {
   }
   .swiper-button-next,
   .swiper-button-prev {
-    width: 28px;
-    height: 22px;
+    width: 56px;
+    height: 44px;
   }
 }
 </style>

@@ -67,12 +67,12 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  height: 50px;
+  height: 100px;
   width: 100vw;
   position: fixed;
   bottom: 0;
   z-index: 99;
-  border-top: 1px solid #eeeeee;
+  border-top: 1px /*no*/ solid #eeeeee;
   background-color: white;
 }
 .tab_item {
@@ -80,20 +80,20 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 12px;
+  font-size: 12px /*px*/;
   &.tab_active {
     color: @primary;
   }
   img {
-    width: 25px;
-    height: 25px;
-    top: 5px;
+    width: 50px;
+    height: 50px;
+    top: 10px;
     padding-bottom: 4px;
     position: absolute;
   }
   span {
     position: absolute;
-    top: 33px;
+    top: 66px;
   }
 }
 </style>

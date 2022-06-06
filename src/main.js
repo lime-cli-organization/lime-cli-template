@@ -17,6 +17,8 @@ import html2pdf from '@/utils/html2pdf';
 Vue.use(html2pdf);
 // 指令
 import '@/directive/index';
+// 移动端适配
+import 'lib-flexible';
 
 Vue.config.productionTip = false;
 import { Button, Icon, Loading, Overlay, RadioGroup, Radio, Cell, PullRefresh, List } from 'vant';

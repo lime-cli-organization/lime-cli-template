@@ -349,11 +349,11 @@ export default {
   span {
     line-height: 2;
     width: calc(100% / 7);
-    border: 1px solid;
+    border: 1px /*no*/ solid;
   }
 }
 .toggle {
-  margin: 15px;
+  margin: 30px;
   line-height: 2;
 }
 .l_calendar,
@@ -367,7 +367,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   button {
-    width: 100px;
+    width: 200px;
   }
 }
 .pannel {
@@ -377,18 +377,18 @@ export default {
     td {
       position: relative;
       .content {
-        width: 43px;
-        height: 55px;
+        width: 86px;
+        height: 110px;
         margin: 0 auto;
         color: rgb(243, 221, 174);
         font-weight: bold;
-        font-size: 18px;
-        border: 1px solid rgb(243, 221, 174);
-        border-radius: 4px;
+        font-size: 18px /*px*/;
+        border: 1px /*no*/ solid rgb(243, 221, 174);
+        border-radius: 8px;
       }
       span {
-        line-height: 12px;
-        margin-bottom: 12px;
+        line-height: 12px /*px*/;
+        margin-bottom: 24px;
         color: #666666;
       }
     }

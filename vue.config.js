@@ -52,6 +52,17 @@ module.exports = defineConfig({
           patterns: [path.resolve(__dirname, './src/styles/variable.less')],
         })
     );
+    // px2rem
+    config.module
+      .rule('css')
+      .test(/\.css$/)
+      .oneOf('vue')
+      .resourceQuery(/\?vue/)
+      .use('px2rem')
+      .loader('px2rem-loader')
+      .options({
+        remUnit: 75,
+      });
   },
   css: {
     loaderOptions: {
