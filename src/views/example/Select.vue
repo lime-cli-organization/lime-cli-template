@@ -27,7 +27,7 @@ export default {
 
 <style lang="less" scoped>
 .select_wrapper {
-  width: 80vw;
-  height: 30px;
+  width: 400px;
+  height: 68px;
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="l_select">
-    {{ selectedIdKeys }}
     <div
       :class="isVisible ? 'input_wrapper focus' : 'input_wrapper'"
       @click="toggle"
@@ -10,7 +9,6 @@
         :value="labelText"
         :placeholder="placeholder"
         :readonly="!canInput"
-        @input="inputSearch"
       />
       <div class="icon_wrapper">
         <template v-if="isClearShow">
@@ -105,6 +103,7 @@ export default {
     filterList() {
       const { data, labelKey, filterable, inputText } = this;
       if (filterable) {
+        console.log(filterable);
         return data.filter((item) => item[labelKey].indexOf(inputText) !== -1);
       }
       return data;
@@ -179,7 +178,7 @@ export default {
     box-sizing: border-box;
     margin: 5px 0;
     overflow: hidden;
-    transition: all 0.5s;
+    max-height: 400px;
     .item {
       font-size: 14px;
       padding: 0 20px;
@@ -188,8 +187,8 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       color: #606266;
-      height: 34px;
-      line-height: 34px;
+      height: 68px;
+      line-height: 68px;
       box-sizing: border-box;
       cursor: pointer;
       text-align: left;
@@ -201,7 +200,6 @@ export default {
     }
   }
 }
-
 .input_wrapper {
   display: flex;
   align-items: center;

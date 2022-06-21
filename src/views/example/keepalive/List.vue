@@ -61,8 +61,8 @@ export default {
         this.refreshing = false;
       }
       const { total, data: list } = await getList({
-        name: "",
-        level: "",
+        name: null,
+        level: "undefined",
         realName: "",
         page: this.page,
         areaId: 0,

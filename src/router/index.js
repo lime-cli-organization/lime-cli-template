@@ -153,7 +153,7 @@ const routes = [
   {
     path: '/example/external',
     name: 'External',
-    component: () => import(/* webpackChunkName: "[External]" */ '../views/example/external.vue'),
+    component: () => import(/* webpackChunkName: "[External]" */ '../views/example/External.vue'),
     meta: {
       title: 'math.js,day.js',
     },
@@ -172,6 +172,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "[Dialog]" */ '../views/example/Dialog.vue'),
     meta: {
       title: 'Dialog',
+    },
+  },
+  {
+    path: '/example/skeleton',
+    name: 'Skeleton',
+    component: () => import(/* webpackChunkName: "[Skeleton]" */ '../views/example/Skeleton.vue'),
+    meta: {
+      title: 'Skeleton',
     },
   },
 ];

@@ -3,6 +3,7 @@
     <van-cell title="日历" is-link to="/example/calendar" />
     <van-cell title="Select-TODO" is-link to="/example/select" />
     <van-cell title="Dialog" is-link to="/example/dialog" />
+    <van-cell title="Skeleton" is-link to="/example/skeleton" />
     <van-cell title="PDF压缩下载" is-link to="/example/downloadPDFZip" />
     <van-cell title="数据解析" is-link to="/example/algorithm" />
     <van-cell title="答题-全量" is-link to="/example/exercise/visibleControl" />

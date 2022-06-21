@@ -3,6 +3,7 @@ import store from '@/store';
 import axios from 'axios';
 import { Toast } from 'vant';
 import { getCookie, delCookie, setCookie } from '@/utils/storage';
+import { obj2params } from '@/utils/utils';
 
 const service = axios.create({
   // withCredentials: true,
@@ -18,7 +19,14 @@ service.interceptors.request.use(
     if (Object.keys(queue).length === 0) {
       store.commit('setPageLoading', true);
     }
-    const { url } = config;
+    let { url, params, data } = config;
+    // undefined 和 null 过滤
+    if (data) {
+      config.data = transformData(data);
+    }
+    if (params) {
+      config.params = transformData(params);
+    }
     queue[url] = url;
     // 不需要token的接口直接返回
 
@@ -30,17 +38,24 @@ service.interceptors.request.use(
     return Promise.resolve(error);
   }
 );
-const refreshToken = () => {
-  return new Promise((resolve) => {
-    resolve({
-      token: '这是一个刷新后的token',
-    });
-  });
+
+// 参数 undefined null 过滤
+const transformData = (obj) => {
+  if (Object.prototype.toString.call(obj) !== '[object Object]') {
+    return obj;
+  }
+  let keys = Object.keys(obj);
+  for (let key of keys) {
+    let value = obj[key];
+    // 过滤空
+    if (value === undefined || value === 'undefined' || value === null || value === 'null') {
+      value = '';
+      obj[key] = value;
+    }
+  }
+  return obj;
 };
-// 是否正在刷新的标记
-let isRefreshing = false;
-// 重试队列
-let requests = [];
+
 service.interceptors.response.use(
   (response) => {
     const {
@@ -56,38 +71,6 @@ service.interceptors.response.use(
     } else {
       // ============================= 刷新token ===================================
       // https://juejin.cn/post/7018439775476514823
-      if (code === 403) {
-        if (!isRefreshing) {
-          return refreshToken({ refreshToken: getCookie('token') })
-            .then((res) => {
-              const { token } = res.data;
-              // 替换token
-              setCookie('token', token);
-              response.headers.Authorization = `${token}`;
-              // token 刷新后将数组的方法重新执行
-              requests.forEach((cb) => cb(token));
-              // 重新请求后清空
-              requests = [];
-              return service(response.config);
-            })
-            .catch((err) => {
-              delCookie('cookie');
-              router.push('/login');
-              return Promise.reject(err);
-            })
-            .finally(() => {
-              isRefreshing = false;
-            });
-        } else {
-          // 返回未执行resolve的promise
-          return new Promise((resolve) => {
-            requests.push((token) => {
-              response.headers.Authorization = `${token}`;
-              resolve(service(response.config));
-            });
-          });
-        }
-      }
       // http请求200， 业务状态码非200
       handleError(response);
       return response && response.data;
